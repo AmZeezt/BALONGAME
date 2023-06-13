@@ -5,6 +5,8 @@ using namespace sf;
 void Player::initVariables()
 {
 	this->movementSpeed = 5.f;
+	this->hpMax = 10;
+	this->hp = this->hpMax;
 }
 
 void Player::initShape()
@@ -26,6 +28,11 @@ Player::~Player()
 {
 }
 
+const RectangleShape& Player::getShape() const
+{
+	return this->shape;
+}
+
 void Player::updateInput()
 {
 	//Keyboard input
@@ -33,14 +40,14 @@ void Player::updateInput()
 	if (Keyboard::isKeyPressed(Keyboard::A)) {
 		this->shape.move(-this->movementSpeed, 0.f);
 	}
-	else if (Keyboard::isKeyPressed(Keyboard::D)) {
+	if (Keyboard::isKeyPressed(Keyboard::D)) {
 		this->shape.move(this->movementSpeed, 0.f);
 	}
 	//Top and Bottom
 	if (Keyboard::isKeyPressed(Keyboard::W)) {
 		this->shape.move(0.f , -this->movementSpeed);
 	}
-	else if (Keyboard::isKeyPressed(Keyboard::S)) {
+	if (Keyboard::isKeyPressed(Keyboard::S)) {
 		this->shape.move(0.f, this->movementSpeed);
 	}
 }
@@ -48,22 +55,19 @@ void Player::updateInput()
 void Player::updateWindowBoundsCollision(const RenderTarget* target)
 {
 	//Player position
-	FloatRect playerBounds = this->shape.getGlobalBounds();
-
-	//TODO: corner positions fix
 
 	//Left Colision
-	if (playerBounds.left <= 0.f)
-		this->shape.setPosition(0.f, playerBounds.top);
+	if (this->shape.getGlobalBounds().left <= 0.f)
+		this->shape.setPosition(0.f, this->shape.getGlobalBounds().top);
 	//Right Colision
-	else if (playerBounds.left + playerBounds.width >= target->getSize().x)
-		this->shape.setPosition(target->getSize().x - playerBounds.width, playerBounds.top);
+	if (this->shape.getGlobalBounds().left + this->shape.getGlobalBounds().width >= target->getSize().x)
+		this->shape.setPosition(target->getSize().x - this->shape.getGlobalBounds().width, this->shape.getGlobalBounds().top);
 	//Top Colision
-	if (playerBounds.top <= 0.f)
-		this->shape.setPosition(playerBounds.left, 0.f);
+	if (this->shape.getGlobalBounds().top <= 0.f)
+		this->shape.setPosition(this->shape.getGlobalBounds().left, 0.f);
 	//Bottom Colision
-	else if (playerBounds.top + playerBounds.height >= target->getSize().y)
-		this->shape.setPosition(playerBounds.left, target->getSize().y - playerBounds.height);
+	if (this->shape.getGlobalBounds().top + this->shape.getGlobalBounds().height >= target->getSize().y)
+		this->shape.setPosition(this->shape.getGlobalBounds().left, target->getSize().y - this->shape.getGlobalBounds().height);
 }
 
 

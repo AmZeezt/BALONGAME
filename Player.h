@@ -14,11 +14,17 @@ private:
 
 	float movementSpeed;
 
+	int hp;
+	int hpMax;
+
 	void initVariables();
 	void initShape();
 public:
 	Player(float x = 320.f, float y = 320.f);
 	virtual ~Player();
+
+	//Functions
+	const RectangleShape& getShape() const;
 
 	void updateInput();
 	void updateWindowBoundsCollision(const RenderTarget* target);

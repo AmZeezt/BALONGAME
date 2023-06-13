@@ -23,9 +23,15 @@ void Game::initVariables()
 	this->endGame = false;
 	this->points = 0;
 	this->health = 20;
+	//Enemies (TO DELETE)
 	this->enemySpawnTimerMax = 25.f;
 	this->enemySpawnTimer = this->enemySpawnTimerMax;
 	this->maxEnemies = 20;
+	//Terrains
+	this->terrainSpawnTimerMax = 25.f;
+	this->terrainSpawnTimer = this->terrainSpawnTimerMax;
+	this->maxTerrains = 20;
+
 	this->mouseHeld = false;
 }
 
@@ -120,6 +126,50 @@ void Game::spawnEnemy()
 	this->enemies.push_back(this->enemy);
 }
 
+void Game::updateTerrains()
+{
+	/*
+		Updates the terrain spawn timer and spawns terrain
+		when the total amount of terrain is smaller than the max.
+		Moves the terrain downwards
+		Removes terrain at the edge of the screen.
+	*/
+
+	//Updating the timer for terrain spawning
+	if (this->terrainSpawnTimer < this->terrainSpawnTimerMax) {
+		this->terrainSpawnTimer += 1.f;
+	}
+	else {
+		if (this->terrains.size() < this->maxTerrains) {
+			this->terrains.push_back(Terrain(*this->window));
+			this->terrainSpawnTimer += 0.f;
+		}
+		
+	}
+
+	//Moving and updating enemies
+	//for (int i = 0; i < this->terrains.size(); i++) {
+	//	this->enemies[i].move(0.f, 3.f);
+	//	if (this->enemies[i].getPosition().y > this->window->getSize().y) {
+	//		this->terrains.erase(this->terrains.begin() + i);
+	//		this->health -= 1;
+	//		std::cout << "Health " << this->health << "\n";
+	//	}
+	//}
+}
+
+void Game::updateColision()
+{
+	//Check colision
+	for (size_t i = 0; i < this->terrains.size(); i++)
+	{
+		if (this->player.getShape().getGlobalBounds().intersects(this->terrains[i].getShape().getGlobalBounds())) {
+			this->terrains.erase(this->terrains.begin() + i);
+		}
+	}
+	
+}
+
 void Game::updateText()
 {
 	std::stringstream ss;
@@ -136,7 +186,7 @@ void Game::updateEnemies()
 		Updates the enemy spawn timer and spawns enemies
 		when the total amount of enemies is smaller than the max.
 		Moves the enemies downwards
-		Removes enemies at the edge of the screen. //TODO
+		Removes enemies at the edge of the screen.
 	*/
 
 	//Updating the timer for enemy spawning
@@ -226,7 +276,10 @@ void Game::update()
 		this->updateMousePosition();
 		this->updateText();
 		this->player.update(this->window);
+		this->updateTerrains();
 		this->updateEnemies();
+		this->updateColision();
+		//this->updateTerrains();
 	}
 
 	//Endgame condition
@@ -247,6 +300,12 @@ void Game::renderEnemies(RenderTarget* target)
 	}
 }
 
+void Game::renderTerrains(RenderTarget* target) {
+	for (auto i : this->terrains) {
+		i.render(*this->window);
+	}
+}
+
 void Game::render()
 {
 	/*
@@ -262,6 +321,8 @@ void Game::render()
 	this->player.render(this->window);
 
 	this->renderEnemies(this->window);
+
+	this->renderTerrains(this->window);
 
 	this->renderText(this->window);
 
