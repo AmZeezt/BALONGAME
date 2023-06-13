@@ -225,7 +225,7 @@ void Game::update()
 		//Update mouse position
 		this->updateMousePosition();
 		this->updateText();
-		this->player.update();
+		this->player.update(this->window);
 		this->updateEnemies();
 	}
 

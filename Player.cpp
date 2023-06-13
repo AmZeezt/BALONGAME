@@ -45,11 +45,33 @@ void Player::updateInput()
 	}
 }
 
+void Player::updateWindowBoundsCollision(const RenderTarget* target)
+{
+	//Player position
+	FloatRect playerBounds = this->shape.getGlobalBounds();
 
-void Player::update()
+	//TODO: corner positions fix
+
+	//Left Colision
+	if (playerBounds.left <= 0.f)
+		this->shape.setPosition(0.f, playerBounds.top);
+	//Right Colision
+	else if (playerBounds.left + playerBounds.width >= target->getSize().x)
+		this->shape.setPosition(target->getSize().x - playerBounds.width, playerBounds.top);
+	//Top Colision
+	if (playerBounds.top <= 0.f)
+		this->shape.setPosition(playerBounds.left, 0.f);
+	//Bottom Colision
+	else if (playerBounds.top + playerBounds.height >= target->getSize().y)
+		this->shape.setPosition(playerBounds.left, target->getSize().y - playerBounds.height);
+}
+
+
+void Player::update(const RenderTarget* target)
 {
 	//Window bounds collision
 	this->updateInput();
+	this->updateWindowBoundsCollision(target);
 }
 
 void Player::render(RenderTarget* target)
