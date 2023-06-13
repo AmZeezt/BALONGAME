@@ -42,10 +42,7 @@ private:
 	bool endGame;
 	unsigned points;
 	int health;
-	//Enemies (TO DELETE)
-	float enemySpawnTimer;
-	float enemySpawnTimerMax;
-	int maxEnemies;
+
 	//Terrains
 	float terrainSpawnTimer;
 	float terrainSpawnTimerMax;
@@ -55,15 +52,12 @@ private:
 	//Game objects
 	Player player;
 	std::vector<Terrain> terrains;
-	std::vector<RectangleShape> enemies;
-	RectangleShape enemy;
 
 	//Private functions
 	void initVariables();
 	void initWindow();
 	void initFonts();
 	void initText();
-	void initEnemies();
 public:
 	//Constructors & Destructors
 	Game();
@@ -74,20 +68,17 @@ public:
 	const bool getEndGame() const;
 
 	//Functions
-	void spawnEnemy();
 	void pollEvents();
 
 	//Updaters
 	void updateMousePosition();
 	void updateText();
-	void updateEnemies();
 	void updateTerrains();
 	void updateColision();
 	void update();
 
 	//Renderers
 	void renderText(RenderTarget* target);
-	void renderEnemies(RenderTarget* target);
 	void renderTerrains(RenderTarget* target);
 	void render();
 };

@@ -23,10 +23,6 @@ void Game::initVariables()
 	this->endGame = false;
 	this->points = 0;
 	this->health = 20;
-	//Enemies (TO DELETE)
-	this->enemySpawnTimerMax = 25.f;
-	this->enemySpawnTimer = this->enemySpawnTimerMax;
-	this->maxEnemies = 20;
 	//Terrains
 	this->terrainSpawnTimerMax = 25.f;
 	this->terrainSpawnTimer = this->terrainSpawnTimerMax;
@@ -58,72 +54,18 @@ void Game::initWindow()
 	this->window->setFramerateLimit(60);
 }
 
-void Game::initEnemies()
-{
-	this->enemy.setPosition(10.f, 10.f);
-	this->enemy.setSize(Vector2f(32.f, 32.f));
-	this->enemy.setScale(Vector2f(1.f, 1.f));
-	this->enemy.setFillColor(Color::Green);
-	//this->enemy.setOutlineColor(Color::Green);
-	//this->enemy.setOutlineThickness(1.f);
-}
-
 //Constructors & Destructors
 Game::Game() {
 	this->initVariables();
 	this->initWindow();
 	this->initFonts();
 	this->initText();
-	this->initEnemies();
 
 }
 
 Game::~Game() {
 	//Prevent memory leak ;-)
 	delete this->window;
-}
-
-void Game::spawnEnemy()
-{
-	/*
-		Spawns enemies and sets their colors and positions.
-		-Sets random position.
-		-Sets random color.
-		-Adds enemy to vector.
-	*/
-
-	this->enemy.setPosition(
-		static_cast<float>(rand() % static_cast<int>(this->window->getSize().x - this->enemy.getSize().x)),
-		0.f
-	);
-
-	//Randomize blocks
-	int type = rand() % 5;
-	switch (type)
-	{
-	case 0:
-		this->enemy.setScale(Vector2f(2.f, 1.f));
-		break;
-	case 1:
-		this->enemy.setScale(Vector2f(3.f, 1.f));
-		break;
-	case 2:
-		this->enemy.setScale(Vector2f(3.f, 2.f));
-		break;
-	case 3:
-		this->enemy.setScale(Vector2f(6.f, 2.f));
-		break;
-	case 4:
-		this->enemy.setScale(Vector2f(4.f, 1.f));
-		break;
-	default:
-		break;
-	}
-
-	this->enemy.setFillColor(Color::Green);
-
-	//Spawn the enemy
-	this->enemies.push_back(this->enemy);
 }
 
 void Game::updateTerrains()
@@ -136,26 +78,28 @@ void Game::updateTerrains()
 	*/
 
 	//Updating the timer for terrain spawning
-	if (this->terrainSpawnTimer < this->terrainSpawnTimerMax) {
-		this->terrainSpawnTimer += 1.f;
-	}
-	else {
-		if (this->terrains.size() < this->maxTerrains) {
+
+	if (this->terrains.size() < this->maxTerrains) {
+		if (this->terrainSpawnTimer >= this->terrainSpawnTimerMax)
+		{
+			//Spawn the enemy and reset the timer
 			this->terrains.push_back(Terrain(*this->window));
-			this->terrainSpawnTimer += 0.f;
+			this->points += 1;
+			std::cout << "Points " << this->points << "\n";
+			this->terrainSpawnTimer = 0.f;
 		}
-		
+		else
+			this->terrainSpawnTimer += 1.f;
 	}
+	
 
 	//Moving and updating enemies
-	//for (int i = 0; i < this->terrains.size(); i++) {
-	//	this->enemies[i].move(0.f, 3.f);
-	//	if (this->enemies[i].getPosition().y > this->window->getSize().y) {
-	//		this->terrains.erase(this->terrains.begin() + i);
-	//		this->health -= 1;
-	//		std::cout << "Health " << this->health << "\n";
-	//	}
-	//}
+	for (int i = 0; i < this->terrains.size(); i++) {
+		this->terrains[i].fall();
+		if (this->terrains[i].getShape().getPosition().y > this->window->getSize().y) {
+			this->terrains.erase(this->terrains.begin() + i);
+		}
+	}
 }
 
 void Game::updateColision()
@@ -165,6 +109,8 @@ void Game::updateColision()
 	{
 		if (this->player.getShape().getGlobalBounds().intersects(this->terrains[i].getShape().getGlobalBounds())) {
 			this->terrains.erase(this->terrains.begin() + i);
+			this->health -= 1;
+			std::cout << "Health " << this->health << "\n";
 		}
 	}
 	
@@ -179,62 +125,6 @@ void Game::updateText()
 	this->uiText.setString(ss.str());
 }
 
-
-void Game::updateEnemies()
-{
-	/*
-		Updates the enemy spawn timer and spawns enemies
-		when the total amount of enemies is smaller than the max.
-		Moves the enemies downwards
-		Removes enemies at the edge of the screen.
-	*/
-
-	//Updating the timer for enemy spawning
-	if (this->enemies.size() < this->maxEnemies) {
-		if (this->enemySpawnTimer >= this->enemySpawnTimerMax)
-		{
-			//Spawn the enemy and reset the timer
-			this->spawnEnemy();
-			this->enemySpawnTimer = 0.f;
-		}
-		else
-			this->enemySpawnTimer += 1.f;
-	}
-
-	//Moving and updating enemies
-	for (int i = 0; i < this->enemies.size(); i++) {
-		this->enemies[i].move(0.f, 3.f);
-		if (this->enemies[i].getPosition().y > this->window->getSize().y) {
-			this->enemies.erase(this->enemies.begin() + i);
-			this->health -= 1;
-			std::cout << "Health " << this->health << "\n";
-		}
-	}
-
-	//Check if clicked upon
-	if (Mouse::isButtonPressed(Mouse::Left)) {
-		if(this->mouseHeld == false) {
-			this->mouseHeld = true;
-			bool deleted = false;
-			for (size_t i = 0; i < this->enemies.size() && deleted == false; i++)
-			{
-				if (this->enemies[i].getGlobalBounds().contains(this->mousePosView)) {
-					deleted = true;
-					this->enemies.erase(this->enemies.begin() + i);
-
-					//Gain points
-					this->points += 1.f;
-					std::cout << "Points " << this->points << "\n";
-				}
-			}
-		} 
-	}
-	else
-	{
-		this->mouseHeld = false;
-	}
-
-}
 
 void Game::pollEvents()
 {
@@ -277,9 +167,7 @@ void Game::update()
 		this->updateText();
 		this->player.update(this->window);
 		this->updateTerrains();
-		this->updateEnemies();
 		this->updateColision();
-		//this->updateTerrains();
 	}
 
 	//Endgame condition
@@ -291,13 +179,6 @@ void Game::update()
 void Game::renderText(RenderTarget* target)
 {
 	target->draw(this->uiText);
-}
-
-void Game::renderEnemies(RenderTarget* target)
-{
-	for (auto& e : this->enemies) {
-		target->draw(e);
-	}
 }
 
 void Game::renderTerrains(RenderTarget* target) {
@@ -319,8 +200,6 @@ void Game::render()
 
 	//Draw game object
 	this->player.render(this->window);
-
-	this->renderEnemies(this->window);
 
 	this->renderTerrains(this->window);
 

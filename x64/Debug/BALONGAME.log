@@ -1,3 +1,2 @@
 ﻿  Game.cpp
-D:\BALON\BALONGAME\BALONGAME\Game.cpp(226,22): warning C4244: '+=': conversion from 'float' to 'unsigned int', possible loss of data
   BALONGAME.vcxproj -> D:\BALON\BALONGAME\x64\Debug\BALONGAME.exe

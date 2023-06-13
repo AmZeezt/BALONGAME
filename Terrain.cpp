@@ -4,7 +4,7 @@ using namespace sf;
 
 void Terrain::initVariables()
 {
-	//this->movementSpeed = 5.f;
+	this->movementSpeed = 5.f;
 }
 
 void Terrain::initShape(const RenderWindow& window)
@@ -19,7 +19,7 @@ void Terrain::initShape(const RenderWindow& window)
 	switch (type)
 	{
 	case 0:
-		this->shape.setScale(Vector2f(2.f, 1.f));
+		this->shape.setScale(Vector2f(7.f, 1.f));
 		break;
 	case 1:
 		this->shape.setScale(Vector2f(3.f, 1.f));
@@ -54,6 +54,11 @@ Terrain::~Terrain()
 const RectangleShape& Terrain::getShape() const
 {
 	return this->shape;
+}
+
+void Terrain::fall()
+{
+	this->shape.move(0.f, this->movementSpeed);
 }
 
 void Terrain::update()
