@@ -25,7 +25,7 @@ void Terrain::initShape(const RenderWindow& window)
 		this->shape.setScale(Vector2f(3.f, 1.f));
 		break;
 	case 2:
-		this->shape.setScale(Vector2f(3.f, 2.f));
+		this->shape.setScale(Vector2f(5.f, 1.f));
 		break;
 	case 3:
 		this->shape.setScale(Vector2f(6.f, 2.f));
