@@ -2,12 +2,15 @@
 #include <vector>
 #include <iostream>
 #include <ctime>
+#include <sstream>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
+
+#include "Player.h"
 
 using namespace sf;
 /*
@@ -21,11 +24,20 @@ private:
 	//Window
 	RenderWindow* window;
 	VideoMode videoMode;
-	Event ev;
+	Event sfmlEvent;
+
+	Player player;
 
 	//Mouse positions
 	Vector2i mousePosWindow;
 	Vector2f mousePosView;
+
+	//Resources
+	Font font;
+
+	//Text
+	Text uiText;
+
 
 	//Game logic
 	bool endGame;
@@ -43,6 +55,8 @@ private:
 	//Private functions
 	void initVariables();
 	void initWindow();
+	void initFonts();
+	void initText();
 	void initEnemies();
 public:
 	//Constructors & Destructors
@@ -57,11 +71,16 @@ public:
 	void spawnEnemy();
 
 	void pollEvents();
+
+	//Updaters
 	void updateMousePosition();
+	void updateText();
 	void updateEnemies();
 	void update();
 
-	void renderEnemies();
+	//Renderers
+	void renderText(RenderTarget* target);
+	void renderEnemies(RenderTarget* target);
 	void render();
 };
 

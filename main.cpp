@@ -6,7 +6,7 @@ using namespace sf;
 int main() {
 
 	//Init srand
-	std::srand(static_cast<unsigned>(time(NULL)));
+	std::srand(static_cast<unsigned>(time(0)));
 
 	//Init Game engine
 	Game game;

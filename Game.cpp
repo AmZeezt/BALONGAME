@@ -1,18 +1,8 @@
 #include "Game.h"
+#include <sstream>
 using namespace sf;
 
-//Constructors & Destructors
-Game::Game() {
-	this->initVariables();
-	this->initWindow();
-	this->initEnemies();
-}
-
-Game::~Game() {
-	//Prevent memory leak ;-)
-	delete this->window;
-}
-
+//Accesors
 const bool Game::running() const
 {
 	return this->window->isOpen();
@@ -32,17 +22,30 @@ void Game::initVariables()
 	//Game logic
 	this->endGame = false;
 	this->points = 0;
-	this->health = 1;
-	this->enemySpawnTimerMax = 20.f;
+	this->health = 20;
+	this->enemySpawnTimerMax = 25.f;
 	this->enemySpawnTimer = this->enemySpawnTimerMax;
-	this->maxEnemies = 50;
+	this->maxEnemies = 20;
 	this->mouseHeld = false;
+}
+
+void Game::initFonts()
+{
+	if (!this->font.loadFromFile("VT323/VT323-Regular.ttf")) std::cout << "FONT LOAD ERROR initFonts()";
+}
+
+void Game::initText()
+{
+	this->uiText.setFont(this->font);
+	this->uiText.setCharacterSize(32);
+	this->uiText.setFillColor(Color::White);
+	this->uiText.setString("NONE");
 }
 
 void Game::initWindow()
 {
 	this->videoMode.height = 800;
-	this->videoMode.width = 600;
+	this->videoMode.width = 640;
 
 	this->window = new RenderWindow(this->videoMode, "BALONG", Style::Titlebar | Style::Close);
 
@@ -54,9 +57,24 @@ void Game::initEnemies()
 	this->enemy.setPosition(10.f, 10.f);
 	this->enemy.setSize(Vector2f(32.f, 32.f));
 	this->enemy.setScale(Vector2f(1.f, 1.f));
-	this->enemy.setFillColor(Color::Cyan);
+	this->enemy.setFillColor(Color::Green);
 	//this->enemy.setOutlineColor(Color::Green);
 	//this->enemy.setOutlineThickness(1.f);
+}
+
+//Constructors & Destructors
+Game::Game() {
+	this->initVariables();
+	this->initWindow();
+	this->initFonts();
+	this->initText();
+	this->initEnemies();
+
+}
+
+Game::~Game() {
+	//Prevent memory leak ;-)
+	delete this->window;
 }
 
 void Game::spawnEnemy()
@@ -73,11 +91,44 @@ void Game::spawnEnemy()
 		0.f
 	);
 
+	//Randomize blocks
+	int type = rand() % 5;
+	switch (type)
+	{
+	case 0:
+		this->enemy.setScale(Vector2f(2.f, 1.f));
+		break;
+	case 1:
+		this->enemy.setScale(Vector2f(3.f, 1.f));
+		break;
+	case 2:
+		this->enemy.setScale(Vector2f(3.f, 2.f));
+		break;
+	case 3:
+		this->enemy.setScale(Vector2f(6.f, 2.f));
+		break;
+	case 4:
+		this->enemy.setScale(Vector2f(4.f, 1.f));
+		break;
+	default:
+		break;
+	}
+
 	this->enemy.setFillColor(Color::Green);
 
 	//Spawn the enemy
 	this->enemies.push_back(this->enemy);
 }
+
+void Game::updateText()
+{
+	std::stringstream ss;
+
+	ss << "Points: " << this->points << " " << "Health: " << this->health << "\n";
+
+	this->uiText.setString(ss.str());
+}
+
 
 void Game::updateEnemies()
 {
@@ -106,6 +157,7 @@ void Game::updateEnemies()
 		if (this->enemies[i].getPosition().y > this->window->getSize().y) {
 			this->enemies.erase(this->enemies.begin() + i);
 			this->health -= 1;
+			std::cout << "Health " << this->health << "\n";
 		}
 	}
 
@@ -122,7 +174,7 @@ void Game::updateEnemies()
 
 					//Gain points
 					this->points += 1.f;
-					std::cout << "Points " << this->points << " Health " << this->health << "\n";
+					std::cout << "Points " << this->points << "\n";
 				}
 			}
 		} 
@@ -137,14 +189,14 @@ void Game::updateEnemies()
 void Game::pollEvents()
 {
 	//Event polling
-	while (this->window->pollEvent(this->ev))
+	while (this->window->pollEvent(this->sfmlEvent))
 	{
-		switch (this->ev.type) {
+		switch (this->sfmlEvent.type) {
 		case Event::Closed:
 			this->window->close();
 			break;
 		case Event::KeyPressed:
-			if (this->ev.key.code == Keyboard::Escape)
+			if (this->sfmlEvent.key.code == Keyboard::Escape)
 				this->window->close();
 			break;
 		}
@@ -172,6 +224,8 @@ void Game::update()
 	if (!this->endGame) {
 		//Update mouse position
 		this->updateMousePosition();
+		this->updateText();
+		this->player.update();
 		this->updateEnemies();
 	}
 
@@ -181,10 +235,15 @@ void Game::update()
 
 }
 
-void Game::renderEnemies()
+void Game::renderText(RenderTarget* target)
+{
+	target->draw(this->uiText);
+}
+
+void Game::renderEnemies(RenderTarget* target)
 {
 	for (auto& e : this->enemies) {
-		this->window->draw(e);
+		target->draw(e);
 	}
 }
 
@@ -200,7 +259,11 @@ void Game::render()
 	this->window->clear();
 
 	//Draw game object
-	this->renderEnemies();
+	this->player.render(this->window);
+
+	this->renderEnemies(this->window);
+
+	this->renderText(this->window);
 
 	this->window->display();
 }
