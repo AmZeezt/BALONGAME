@@ -9,6 +9,16 @@ void Player::initVariables()
 	this->hp = this->hpMax;
 }
 
+void Player::initSprite()
+{
+	this->sprite.setTexture(this->texture);
+}
+
+void Player::initTexture()
+{
+	//Load texture from file
+}
+
 void Player::initShape()
 {
 	this->shape.setFillColor(Color::Red);
@@ -22,6 +32,8 @@ Player::Player(float x, float y)
 
 	this->initVariables();
 	this->initShape();
+	this->initTexture();
+	this->initSprite();
 }
 
 Player::~Player()
@@ -91,4 +103,5 @@ void Player::update(const RenderTarget* target)
 void Player::render(RenderTarget* target)
 {
 	target->draw(this->shape);
+	// target->draw(this->sprite);
 }

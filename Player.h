@@ -11,12 +11,16 @@ class Player
 {
 private:
 	RectangleShape shape;
+	Sprite sprite;
+	Texture texture;
 
 	float movementSpeed;
 	int hp;
 	int hpMax;
 
 	void initVariables();
+	void initSprite();
+	void initTexture();
 	void initShape();
 public:
 	Player(float x = 320.f, float y = 320.f);

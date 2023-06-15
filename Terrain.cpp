@@ -32,12 +32,8 @@ void Terrain::initShape(const RenderWindow& window)
 		break;
 	}
 
-	float test = static_cast<float>(rand() % window.getSize().x - this->shape.getGlobalBounds().width);
-
-	std::cout << test << "\n";
-
 	this->shape.setPosition(
-		test,
+		static_cast<float>(rand() % static_cast<int>(window.getSize().x - this->shape.getSize().x)),
 		0.f
 	);
 
