@@ -12,6 +12,7 @@
 
 #include "Player.h"
 #include "Terrain.h"
+#include "Background.h"
 
 using namespace sf;
 /*
@@ -57,6 +58,7 @@ private:
 	std::vector<Terrain> terrains;
 	std::vector<RectangleShape> enemies;
 	RectangleShape enemy;
+	Background* background;
 
 	//Private functions
 	void initVariables();
@@ -64,6 +66,7 @@ private:
 	void initFonts();
 	void initText();
 	void initEnemies();
+	void init_background();
 public:
 	//Constructors & Destructors
 	Game();
