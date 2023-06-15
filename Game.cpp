@@ -56,6 +56,15 @@ void Game::initText()
 	this->uiText.setString("NONE");
 }
 
+void Game::initBackground() {
+	try {
+		background = new Background(*window, 2, 50, 120);
+	}
+	catch (const std::runtime_error& e) {
+		std::cerr << "Caught exception: " << e.what() << '\n';
+	}
+}
+
 void Game::initWindow()
 {
 	this->videoMode.height = 800;
@@ -68,10 +77,11 @@ void Game::initWindow()
 
 //Constructors & Destructors
 Game::Game() {
-	this->initVariables();
-	this->initWindow();
-	this->initFonts();
-	this->initText();
+	initVariables();
+	initWindow();
+	initFonts();
+	initText();
+	initBackground();
 }
 
 Game::~Game() {
@@ -218,14 +228,21 @@ void Game::render()
 		-> Display frame [display()]
 	*/
 
-	this->window->clear();
+	// Bruh, you don't need this-> at the beggining if you're reffering 
+	// to class owned variable/method, you use this only when the method 
+	// you're in  takes argument of the same name as the class variable 
+	// then you use this-> to differenciate between one another
 
-	//Game flow
-	this->player.render(this->window);
+	window->clear();
 
-	this->renderTerrains(this->window);
+	//Draw game object
+	background->update();
 
-	this->renderText(this->window);
+	player.render(window);
 
-	this->window->display();
+	renderTerrains(window);
+
+	renderText(window);
+
+	window->display();
 }
