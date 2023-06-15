@@ -1,11 +1,2 @@
-﻿  Background.cpp
-D:\BALON\BALONGAME\Background.cpp(46,34): warning C4244: 'initializing': conversion from 'double' to 'unsigned int', possible loss of data
-D:\BALON\BALONGAME\Background.cpp(46,28): warning C4244: 'initializing': conversion from 'double' to 'const unsigned int', possible loss of data
-D:\BALON\BALONGAME\Background.cpp(47,79): warning C4244: 'initializing': conversion from 'double' to 'unsigned int', possible loss of data
-D:\BALON\BALONGAME\Background.cpp(47,25): warning C4244: 'initializing': conversion from 'double' to 'const unsigned int', possible loss of data
-D:\BALON\BALONGAME\Background.cpp(55,47): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-D:\BALON\BALONGAME\Background.cpp(55,34): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-  Game.cpp
-  main.cpp
-  Generating Code...
+﻿  Game.cpp
   BALONGAME.vcxproj -> D:\BALON\BALONGAME\x64\Debug\BALONGAME.exe
