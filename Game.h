@@ -12,6 +12,7 @@
 
 #include "Player.h"
 #include "Terrain.h"
+#include "Background.h"
 
 using namespace sf;
 /*
@@ -52,12 +53,15 @@ private:
 	//Game objects
 	Player player;
 	std::vector<Terrain> terrains;
+	Background* background;
 
 	//Private functions
 	void initVariables();
 	void initWindow();
 	void initFonts();
 	void initText();
+	void initBackground();
+
 public:
 	//Constructors & Destructors
 	Game();
