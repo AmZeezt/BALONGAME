@@ -13,6 +13,8 @@
 #include "Player.h"
 #include "Terrain.h"
 #include "Background.h"
+#include "Score.h"
+#include "Health.h"
 
 using namespace sf;
 /*
@@ -43,7 +45,6 @@ private:
 
 	//Game logic
 	bool endGame;
-	unsigned points;
 
 	//Terrains
 	float terrainSpawnTimer;
@@ -51,19 +52,21 @@ private:
 	int maxTerrains;
 
 	//Game objects
-	Player player;
+	Player* player;
 	std::vector<Terrain> terrains;
 	Sprite gameOverSprite;
 	Sprite gameOverRestartSprite;
 	Background* background;
+	Score* score;
+	// make player inherits from health
+	Health* health;
 
 
 	//Private functions
 	void initVariables();
 	void initWindow();
-	void initFonts();
-	void initText();
 	void initBackground();
+	void initUI();
 
 public:
 	//Constructors & Destructors
@@ -78,15 +81,14 @@ public:
 	void pollEvents();
 
 	//Updaters
-	void updateText();
 	void updatePlayer();
 	void updateTerrains();
 	void updateColision();
 	void update();
 
 	//Renderers
-	void renderText(RenderTarget* target);
 	void renderTerrains(RenderTarget* target);
 	void render();
+	void renderText(RenderTarget* target);
 };
 

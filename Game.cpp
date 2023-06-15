@@ -20,7 +20,6 @@ void Game::initVariables()
 	this->window = nullptr;
 	//Game logic
 	this->endGame = false;
-	this->points = 0;
 	//Terrains
 	this->terrainSpawnTimerMax = 25.f;
 	this->terrainSpawnTimer = this->terrainSpawnTimerMax;
@@ -42,26 +41,25 @@ void Game::initVariables()
 	this->gameOverRestartSprite.setPosition(120.f, 500.f);
 }
 
-void Game::initFonts()
-{
-	if (!this->font.loadFromFile("VT323/VT323-Regular.ttf")) std::cout << "FONT LOAD ERROR initFonts()" << "\n";
-}
-
-void Game::initText()
-{
-	//Points and Lives
-	this->uiText.setFont(this->font);
-	this->uiText.setCharacterSize(32);
-	this->uiText.setFillColor(Color::White);
-	this->uiText.setString("NONE");
-}
-
 void Game::initBackground() {
 	try {
 		background = new Background(*window, 2, 50, 120);
 	}
 	catch (const std::runtime_error& e) {
 		std::cerr << "Caught exception: " << e.what() << '\n';
+	}
+}
+
+void Game::initUI() {
+	try {
+		const unsigned maxHp = 5;
+
+		score = new Score(*window, 0);
+		health = new Health(*window, maxHp);
+		player->setMaxHp(maxHp);
+	}
+	catch (const std::runtime_error& e) {
+		std::cerr << "Caught exception in initializing UI: " << e.what() << '\n';
 	}
 }
 
@@ -77,11 +75,11 @@ void Game::initWindow()
 
 //Constructors & Destructors
 Game::Game() {
+	player = new Player();
 	initVariables();
 	initWindow();
-	initFonts();
-	initText();
 	initBackground();
+	initUI();
 }
 
 Game::~Game() {
@@ -115,8 +113,7 @@ void Game::updateTerrains()
 			} else {
 				this->terrains.push_back(Terrain(*this->window, this->cloud3));
 			}
-			this->points += 1;
-			std::cout << "Points " << this->points << "\n";
+			score->update(1);
 			this->terrainSpawnTimer = 0.f;
 		}
 		else
@@ -138,32 +135,23 @@ void Game::updateColision()
 	//Check colision
 	for (size_t i = 0; i < this->terrains.size(); i++)
 	{
-		if (this->player.getSprite().getGlobalBounds().intersects(this->terrains[i].getSprite().getGlobalBounds())) {
+		if (this->player->getSprite().getGlobalBounds().intersects(this->terrains[i].getSprite().getGlobalBounds())) {
 			this->terrains.erase(this->terrains.begin() + i);
-			this->player.lowerPlayerHp();
-			std::cout << "Health " << this->player.getPlayerHp() << "\n";
+			this->player->lowerPlayerHp();
+			health->damage(1);
 		}
 	}
 	
 }
 
-void Game::updateText()
-{
-	std::stringstream ss;
-
-	ss << "Points: " << this->points << " " << "Health: " << this->player.getPlayerHp() << "\n";
-
-	this->uiText.setString(ss.str());
-}
-
 void Game::updatePlayer()
 {
-	this->player.update(this->window);
-	if (this->player.getPlayerHp() <= 0) {
-		this->endGame = true;
+	player->update(window);
+
+	if (health->getHealth() <= 0 ) {
+		endGame = true;
 	}
 }
-
 
 void Game::pollEvents()
 {
@@ -182,7 +170,13 @@ void Game::pollEvents()
 	}
 }
 
-
+void Game::renderText(RenderTarget* target)
+{
+	if (this->endGame) {
+		target->draw(this->gameOverSprite);
+		target->draw(this->gameOverRestartSprite);
+	}
+}
 
 //Updater & Renderer Define
 void Game::update()
@@ -192,25 +186,15 @@ void Game::update()
 	//End game check
 	if (!this->endGame) {
 		//Update mouse position
-		this->updateText();
 		this->updatePlayer();
 		this->updateTerrains();
 		this->updateColision();
 	}
 
 	//Endgame condition
-	if (this->player.getPlayerHp() <= 0)
+	if (health->getHealth() <= 0)
 		this->endGame = true;
 
-}
-
-void Game::renderText(RenderTarget* target)
-{
-	target->draw(this->uiText);
-	if (this->endGame) {
-		target->draw(this->gameOverSprite);
-		target->draw(this->gameOverRestartSprite);
-	}
 }
 
 void Game::renderTerrains(RenderTarget* target) {
@@ -238,11 +222,14 @@ void Game::render()
 	//Draw game object
 	background->update();
 
-	player.render(window);
+	player->render(window);
 
 	renderTerrains(window);
 
 	renderText(window);
+
+	score->render();
+	health->render();
 
 	window->display();
 }
