@@ -39,4 +39,75 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="textures\x64\obstacles\bird.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\x64\obstacles\cloud-1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\x64\obstacles\cloud-2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\x64\obstacles\cloud-3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\x64\obstacles\rain-2.gif">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\x64\obstacles\rain-2-1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\x64\obstacles\rain-2-2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\x64\obstacles\rain-2-3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\x64\obstacles\rain-2-4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\x64\obstacles\rain-3.gif">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\x64\obstacles\rain-3-1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\x64\obstacles\rain-3-2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\x64\obstacles\rain-3-3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\x64\obstacles\rain-3-4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\x64\player\balloon.gif">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\x64\player\balloon-1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\x64\player\balloon-2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\x64\player\balloon-3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\x64\player\balloon-4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\x64\player\balloon-5.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\x64\player\balloon-6.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\x64\player\balloon-7.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\x64\player\balloon-8.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

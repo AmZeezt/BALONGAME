@@ -26,10 +26,10 @@ private:
 	RenderWindow* window;
 	VideoMode videoMode;
 	Event sfmlEvent;
-
-	//Mouse positions
-	Vector2i mousePosWindow;
-	Vector2f mousePosView;
+	Texture bird;
+	Texture cloud1;
+	Texture cloud2;
+	Texture cloud3;
 
 	//Resources
 	Font font;

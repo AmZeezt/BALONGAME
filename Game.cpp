@@ -18,7 +18,6 @@ const bool Game::getEndGame() const
 void Game::initVariables()
 {
 	this->window = nullptr;
-	
 	//Game logic
 	this->endGame = false;
 	this->points = 0;
@@ -26,11 +25,15 @@ void Game::initVariables()
 	this->terrainSpawnTimerMax = 25.f;
 	this->terrainSpawnTimer = this->terrainSpawnTimerMax;
 	this->maxTerrains = 20;
+	this->bird.loadFromFile("textures/x64/obstacles/bird.png");
+	this->cloud1.loadFromFile("textures/x64/obstacles/cloud-1.png");
+	this->cloud2.loadFromFile("textures/x64/obstacles/cloud-2.png");
+	this->cloud3.loadFromFile("textures/x64/obstacles/cloud-3.png");
 }
 
 void Game::initFonts()
 {
-	if (!this->font.loadFromFile("VT323/VT323-Regular.ttf")) std::cout << "FONT LOAD ERROR initFonts()";
+	if (!this->font.loadFromFile("VT323/VT323-Regular.ttf")) std::cout << "FONT LOAD ERROR initFonts()" << "\n";
 }
 
 void Game::initText()
@@ -47,6 +50,7 @@ void Game::initText()
 	this->endGameText.setCharacterSize(48);
 	this->endGameText.setFillColor(Color::White);
 	this->endGameText.setString("GAME OVER");
+	this->endGameText.setPosition(240.f, 320.f);
 }
 
 void Game::initWindow()
@@ -56,7 +60,7 @@ void Game::initWindow()
 
 	this->window = new RenderWindow(this->videoMode, "BALONG", Style::Titlebar | Style::Close);
 
-	this->window->setFramerateLimit(60);
+	this->window->setFramerateLimit(30);
 }
 
 //Constructors & Destructors
@@ -87,7 +91,17 @@ void Game::updateTerrains()
 		if (this->terrainSpawnTimer >= this->terrainSpawnTimerMax)
 		{
 			//Spawn the enemy and reset the timer
-			this->terrains.push_back(Terrain(*this->window));
+			int type = rand() % 100;
+
+			if (type <= 8) {
+				this->terrains.push_back(Terrain(*this->window, this->bird));
+			} else if (type <= 16) {
+				this->terrains.push_back(Terrain(*this->window, this->cloud1));
+			} else if (type <= 45) {
+				this->terrains.push_back(Terrain(*this->window, this->cloud2));
+			} else {
+				this->terrains.push_back(Terrain(*this->window, this->cloud3));
+			}
 			this->points += 1;
 			std::cout << "Points " << this->points << "\n";
 			this->terrainSpawnTimer = 0.f;
@@ -100,7 +114,7 @@ void Game::updateTerrains()
 	//Moving and updating enemies
 	for (int i = 0; i < this->terrains.size(); i++) {
 		this->terrains[i].fall();
-		if (this->terrains[i].getShape().getPosition().y > this->window->getSize().y) {
+		if (this->terrains[i].getSprite().getPosition().y > (this->window->getSize().y + 128)) {
 			this->terrains.erase(this->terrains.begin() + i);
 		}
 	}
@@ -111,7 +125,7 @@ void Game::updateColision()
 	//Check colision
 	for (size_t i = 0; i < this->terrains.size(); i++)
 	{
-		if (this->player.getShape().getGlobalBounds().intersects(this->terrains[i].getShape().getGlobalBounds())) {
+		if (this->player.getSprite().getGlobalBounds().intersects(this->terrains[i].getSprite().getGlobalBounds())) {
 			this->terrains.erase(this->terrains.begin() + i);
 			this->player.lowerPlayerHp();
 			std::cout << "Health " << this->player.getPlayerHp() << "\n";
