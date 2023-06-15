@@ -25,10 +25,21 @@ void Game::initVariables()
 	this->terrainSpawnTimerMax = 25.f;
 	this->terrainSpawnTimer = this->terrainSpawnTimerMax;
 	this->maxTerrains = 20;
+
+	//Textures
+	this->gameOverTexture.loadFromFile("textures/x64/ui/game_over.png");
+	this->gameOverRestart.loadFromFile("textures/x64/ui/press_enter_to_play.png");
 	this->bird.loadFromFile("textures/x64/obstacles/bird.png");
 	this->cloud1.loadFromFile("textures/x64/obstacles/cloud-1.png");
 	this->cloud2.loadFromFile("textures/x64/obstacles/cloud-2.png");
 	this->cloud3.loadFromFile("textures/x64/obstacles/cloud-3.png");
+
+	//Sprites
+	this->gameOverSprite.setTexture(this->gameOverTexture);
+	this->gameOverRestartSprite.setTexture(this->gameOverRestart);
+	this->gameOverSprite.setPosition(120.f,160.f);
+	this->gameOverSprite.setScale(3.f, 3.f);
+	this->gameOverRestartSprite.setPosition(120.f, 500.f);
 }
 
 void Game::initFonts()
@@ -43,14 +54,6 @@ void Game::initText()
 	this->uiText.setCharacterSize(32);
 	this->uiText.setFillColor(Color::White);
 	this->uiText.setString("NONE");
-
-
-	//TODO: SET POSITION
-	this->endGameText.setFont(this->font);
-	this->endGameText.setCharacterSize(48);
-	this->endGameText.setFillColor(Color::White);
-	this->endGameText.setString("GAME OVER");
-	this->endGameText.setPosition(240.f, 320.f);
 }
 
 void Game::initWindow()
@@ -195,7 +198,8 @@ void Game::renderText(RenderTarget* target)
 {
 	target->draw(this->uiText);
 	if (this->endGame) {
-		target->draw(this->endGameText);
+		target->draw(this->gameOverSprite);
+		target->draw(this->gameOverRestartSprite);
 	}
 }
 

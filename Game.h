@@ -30,13 +30,14 @@ private:
 	Texture cloud1;
 	Texture cloud2;
 	Texture cloud3;
+	Texture gameOverTexture;
+	Texture gameOverRestart;
 
 	//Resources
 	Font font;
 
 	//Text
 	Text uiText;
-	Text endGameText;
 
 
 	//Game logic
@@ -51,6 +52,8 @@ private:
 	//Game objects
 	Player player;
 	std::vector<Terrain> terrains;
+	Sprite gameOverSprite;
+	Sprite gameOverRestartSprite;
 
 	//Private functions
 	void initVariables();
