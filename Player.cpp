@@ -6,7 +6,7 @@ using namespace sf;
 void Player::initVariables()
 {
 	this->movementSpeed = 10.f;
-	this->hpMax = 1;
+	this->hpMax = 10;
 	this->hp = this->hpMax;
 }
 

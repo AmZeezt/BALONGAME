@@ -32,7 +32,10 @@ void Background::update() {
         singleOffset -= TILE_SIZE;
         totalOffset++;
     }
+}
 
+void Background::render()
+{
     draw();
 }
 

@@ -21,25 +21,20 @@ void Game::initVariables()
 	//Game logic
 	this->endGame = false;
 	this->points = 0;
+	this->view = 0;
 	//Terrains
 	this->terrainSpawnTimerMax = 25.f;
 	this->terrainSpawnTimer = this->terrainSpawnTimerMax;
 	this->maxTerrains = 20;
 
 	//Textures
-	this->gameOverTexture.loadFromFile("textures/x64/ui/game_over.png");
-	this->gameOverRestart.loadFromFile("textures/x64/ui/press_enter_to_play.png");
+
 	this->bird.loadFromFile("textures/x64/obstacles/bird.png");
 	this->cloud1.loadFromFile("textures/x64/obstacles/cloud-1.png");
 	this->cloud2.loadFromFile("textures/x64/obstacles/cloud-2.png");
 	this->cloud3.loadFromFile("textures/x64/obstacles/cloud-3.png");
 
-	//Sprites
-	this->gameOverSprite.setTexture(this->gameOverTexture);
-	this->gameOverRestartSprite.setTexture(this->gameOverRestart);
-	this->gameOverSprite.setPosition(120.f,160.f);
-	this->gameOverSprite.setScale(3.f, 3.f);
-	this->gameOverRestartSprite.setPosition(120.f, 500.f);
+
 }
 
 void Game::initFonts()
@@ -53,7 +48,7 @@ void Game::initText()
 	this->uiText.setFont(this->font);
 	this->uiText.setCharacterSize(32);
 	this->uiText.setFillColor(Color::White);
-	this->uiText.setString("NONE");
+	this->uiText.setString("");
 }
 
 void Game::initBackground() {
@@ -177,6 +172,10 @@ void Game::pollEvents()
 		case Event::KeyPressed:
 			if (this->sfmlEvent.key.code == Keyboard::Escape)
 				this->window->close();
+			if (this->sfmlEvent.key.code == Keyboard::Enter)
+				if (this->view == 0) {
+					this->view = 1;
+				}
 			break;
 		}
 	}
@@ -190,27 +189,37 @@ void Game::update()
 	this->pollEvents();
 
 	//End game check
-	if (!this->endGame) {
-		//Update mouse position
-		this->updateText();
-		this->updatePlayer();
-		this->updateTerrains();
-		this->updateColision();
+	if (this->view == 0) {
+		userInterface.update(view);
 	}
+	else if (this->view == 1) {
+		if (!this->endGame) {
+			//Update mouse position
+			this->updateText();
+			this->updatePlayer();
+			this->updateTerrains();
+			background->update();
+			this->updateColision();
+			userInterface.update(view);
+		}
+	}
+	else if (this->view == 2) {
+		userInterface.update(view);
+	}
+	
 
 	//Endgame condition
-	if (this->player.getPlayerHp() <= 0)
+	if (this->player.getPlayerHp() <= 0) {
 		this->endGame = true;
+		this->view = 2;
+	}
+		
 
 }
 
 void Game::renderText(RenderTarget* target)
 {
 	target->draw(this->uiText);
-	if (this->endGame) {
-		target->draw(this->gameOverSprite);
-		target->draw(this->gameOverRestartSprite);
-	}
 }
 
 void Game::renderTerrains(RenderTarget* target) {
@@ -236,13 +245,16 @@ void Game::render()
 	window->clear();
 
 	//Draw game object
-	background->update();
+
+	background->render();
 
 	player.render(window);
 
 	renderTerrains(window);
 
 	renderText(window);
+
+	userInterface.render(window);
 
 	window->display();
 }

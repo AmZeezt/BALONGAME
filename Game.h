@@ -13,6 +13,7 @@
 #include "Player.h"
 #include "Terrain.h"
 #include "Background.h"
+#include "userInterface.h"
 
 using namespace sf;
 /*
@@ -31,8 +32,6 @@ private:
 	Texture cloud1;
 	Texture cloud2;
 	Texture cloud3;
-	Texture gameOverTexture;
-	Texture gameOverRestart;
 
 	//Resources
 	Font font;
@@ -49,13 +48,14 @@ private:
 	float terrainSpawnTimer;
 	float terrainSpawnTimerMax;
 	int maxTerrains;
+	int view;
 
 	//Game objects
 	Player player;
 	std::vector<Terrain> terrains;
-	Sprite gameOverSprite;
-	Sprite gameOverRestartSprite;
 	Background* background;
+	userInterface userInterface;
+
 
 
 	//Private functions
