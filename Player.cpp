@@ -6,8 +6,6 @@ using namespace sf;
 void Player::initVariables()
 {
 	this->movementSpeed = 10.f;
-	this->hpMax = 1;
-	this->hp = this->hpMax;
 }
 
 void Player::initSprite()
@@ -27,13 +25,19 @@ void Player::initTexture()
 }
 
 
-Player::Player(float x, float y)
+Player::Player(int maxHealth, float x, float y) : hpMax(maxHealth), hp(maxHealth)
 {
 	//Set player starting position
 	this->sprite.setPosition(x, y);
 	this->initVariables();
 	this->initTexture();
 	this->initSprite();
+}
+
+void Player::setMaxHp(int maxHp)
+{
+	this->hpMax = maxHp;
+	hp = hpMax;
 }
 
 Player::~Player()

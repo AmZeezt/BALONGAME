@@ -21,11 +21,13 @@ private:
 	void initSprite();
 	void initTexture();
 public:
-	Player(float x = 320.f, float y = 320.f);
+	Player(int maxHealth = 3, float x = 320.f, float y = 320.f);
 	virtual ~Player();
 
 	//Functions
 	const Sprite& getSprite() const;
+
+	void setMaxHp(int maxHp);
 
 	int getPlayerHp();
 	void lowerPlayerHp();

@@ -135,17 +135,33 @@
   <ItemGroup>
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Health.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Score.cpp" />
     <ClCompile Include="Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Background.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Health.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Score.h" />
     <ClInclude Include="Terrain.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="textures\x64\digits\0.png" />
+    <Image Include="textures\x64\digits\1.png" />
+    <Image Include="textures\x64\digits\2.png" />
+    <Image Include="textures\x64\digits\3.png" />
+    <Image Include="textures\x64\digits\4.png" />
+    <Image Include="textures\x64\digits\5.png" />
+    <Image Include="textures\x64\digits\6.png" />
+    <Image Include="textures\x64\digits\7.png" />
+    <Image Include="textures\x64\digits\8.png" />
+    <Image Include="textures\x64\digits\9.png" />
+    <Image Include="textures\x64\hearts\heart-empty.png" />
+    <Image Include="textures\x64\hearts\heart.png" />
     <Image Include="textures\x64\obstacles\bird.png" />
     <Image Include="textures\x64\obstacles\cloud-1.png" />
     <Image Include="textures\x64\obstacles\cloud-2.png" />
@@ -169,6 +185,9 @@
     <Image Include="textures\x64\player\balloon-7.png" />
     <Image Include="textures\x64\player\balloon-8.png" />
     <Image Include="textures\x64\player\balloon.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitignore" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
