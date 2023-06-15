@@ -36,18 +36,17 @@ private:
 
 	//Text
 	Text uiText;
+	Text endGameText;
 
 
 	//Game logic
 	bool endGame;
 	unsigned points;
-	int health;
 
 	//Terrains
 	float terrainSpawnTimer;
 	float terrainSpawnTimerMax;
 	int maxTerrains;
-	bool mouseHeld;
 
 	//Game objects
 	Player player;
@@ -71,8 +70,8 @@ public:
 	void pollEvents();
 
 	//Updaters
-	void updateMousePosition();
 	void updateText();
+	void updatePlayer();
 	void updateTerrains();
 	void updateColision();
 	void update();

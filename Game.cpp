@@ -22,13 +22,10 @@ void Game::initVariables()
 	//Game logic
 	this->endGame = false;
 	this->points = 0;
-	this->health = 20;
 	//Terrains
 	this->terrainSpawnTimerMax = 25.f;
 	this->terrainSpawnTimer = this->terrainSpawnTimerMax;
 	this->maxTerrains = 20;
-
-	this->mouseHeld = false;
 }
 
 void Game::initFonts()
@@ -38,10 +35,18 @@ void Game::initFonts()
 
 void Game::initText()
 {
+	//Points and Lives
 	this->uiText.setFont(this->font);
 	this->uiText.setCharacterSize(32);
 	this->uiText.setFillColor(Color::White);
 	this->uiText.setString("NONE");
+
+
+	//TODO: SET POSITION
+	this->endGameText.setFont(this->font);
+	this->endGameText.setCharacterSize(48);
+	this->endGameText.setFillColor(Color::White);
+	this->endGameText.setString("GAME OVER");
 }
 
 void Game::initWindow()
@@ -60,7 +65,6 @@ Game::Game() {
 	this->initWindow();
 	this->initFonts();
 	this->initText();
-
 }
 
 Game::~Game() {
@@ -109,8 +113,8 @@ void Game::updateColision()
 	{
 		if (this->player.getShape().getGlobalBounds().intersects(this->terrains[i].getShape().getGlobalBounds())) {
 			this->terrains.erase(this->terrains.begin() + i);
-			this->health -= 1;
-			std::cout << "Health " << this->health << "\n";
+			this->player.lowerPlayerHp();
+			std::cout << "Health " << this->player.getPlayerHp() << "\n";
 		}
 	}
 	
@@ -120,9 +124,17 @@ void Game::updateText()
 {
 	std::stringstream ss;
 
-	ss << "Points: " << this->points << " " << "Health: " << this->health << "\n";
+	ss << "Points: " << this->points << " " << "Health: " << this->player.getPlayerHp() << "\n";
 
 	this->uiText.setString(ss.str());
+}
+
+void Game::updatePlayer()
+{
+	this->player.update(this->window);
+	if (this->player.getPlayerHp() <= 0) {
+		this->endGame = true;
+	}
 }
 
 
@@ -143,16 +155,6 @@ void Game::pollEvents()
 	}
 }
 
-void Game::updateMousePosition()
-{
-	/*
-		Update mouse position
-		-> Relative to window
-	*/
-
-	this->mousePosWindow = Mouse::getPosition(*this->window);
-	this->mousePosView = this->window->mapPixelToCoords(this->mousePosWindow);
-}
 
 
 //Updater & Renderer Define
@@ -163,15 +165,14 @@ void Game::update()
 	//End game check
 	if (!this->endGame) {
 		//Update mouse position
-		this->updateMousePosition();
 		this->updateText();
-		this->player.update(this->window);
+		this->updatePlayer();
 		this->updateTerrains();
 		this->updateColision();
 	}
 
 	//Endgame condition
-	if (this->health <= 0)
+	if (this->player.getPlayerHp() <= 0)
 		this->endGame = true;
 
 }
@@ -179,6 +180,9 @@ void Game::update()
 void Game::renderText(RenderTarget* target)
 {
 	target->draw(this->uiText);
+	if (this->endGame) {
+		target->draw(this->endGameText);
+	}
 }
 
 void Game::renderTerrains(RenderTarget* target) {
@@ -198,7 +202,7 @@ void Game::render()
 
 	this->window->clear();
 
-	//Draw game object
+	//Game flow
 	this->player.render(this->window);
 
 	this->renderTerrains(this->window);

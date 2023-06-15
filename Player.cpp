@@ -33,6 +33,16 @@ const RectangleShape& Player::getShape() const
 	return this->shape;
 }
 
+int Player::getPlayerHp()
+{
+	return this->hp;
+}
+
+void Player::lowerPlayerHp()
+{
+	this->hp--;
+}
+
 void Player::updateInput()
 {
 	//Keyboard input

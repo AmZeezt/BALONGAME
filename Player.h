@@ -13,7 +13,6 @@ private:
 	RectangleShape shape;
 
 	float movementSpeed;
-
 	int hp;
 	int hpMax;
 
@@ -26,6 +25,8 @@ public:
 	//Functions
 	const RectangleShape& getShape() const;
 
+	int getPlayerHp();
+	void lowerPlayerHp();
 	void updateInput();
 	void updateWindowBoundsCollision(const RenderTarget* target);
 	void update(const RenderTarget* target);

@@ -1,4 +1,5 @@
 #include "Terrain.h"
+#include <iostream>
 
 using namespace sf;
 
@@ -9,33 +10,38 @@ void Terrain::initVariables()
 
 void Terrain::initShape(const RenderWindow& window)
 {
-	this->shape.setSize(Vector2f(32.f, 32.f));
-	this->shape.setPosition(
-		static_cast<float>(rand()%window.getSize().x - this->shape.getGlobalBounds().width),
-		0.f
-	);
-
 	int type = rand() % 5;
 	switch (type)
 	{
 	case 0:
-		this->shape.setScale(Vector2f(7.f, 1.f));
+		this->shape.setSize(Vector2f(256.f, 32.f));
 		break;
 	case 1:
-		this->shape.setScale(Vector2f(3.f, 1.f));
+		this->shape.setSize(Vector2f(128.f, 32.f));
 		break;
 	case 2:
-		this->shape.setScale(Vector2f(5.f, 1.f));
+		this->shape.setSize(Vector2f(128.f, 64.f));
 		break;
 	case 3:
-		this->shape.setScale(Vector2f(6.f, 2.f));
+		this->shape.setSize(Vector2f(128.f, 32.f));
 		break;
 	case 4:
-		this->shape.setScale(Vector2f(4.f, 1.f));
+		this->shape.setSize(Vector2f(256.f, 64.f));
 		break;
 	default:
 		break;
 	}
+
+	float test = static_cast<float>(rand() % window.getSize().x - this->shape.getGlobalBounds().width);
+
+	std::cout << test << "\n";
+
+	this->shape.setPosition(
+		test,
+		0.f
+	);
+
+	
 
 	this->shape.setFillColor(Color::Green);
 }
