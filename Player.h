@@ -10,23 +10,26 @@ using namespace sf;
 class Player
 {
 private:
-	RectangleShape shape;
+	Sprite sprite;
+	Texture texture;
 
 	float movementSpeed;
-
 	int hp;
 	int hpMax;
 
 	void initVariables();
-	void initShape();
+	void initSprite();
+	void initTexture();
 public:
 	Player(float x = 320.f, float y = 320.f);
 	virtual ~Player();
 
 	//Functions
-	const RectangleShape& getShape() const;
+	const Sprite& getSprite() const;
 
-	void updateInput();
+	int getPlayerHp();
+	void lowerPlayerHp();
+	void move();
 	void updateWindowBoundsCollision(const RenderTarget* target);
 	void update(const RenderTarget* target);
 	void render(RenderTarget* target);

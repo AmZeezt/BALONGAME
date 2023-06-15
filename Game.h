@@ -27,10 +27,12 @@ private:
 	RenderWindow* window;
 	VideoMode videoMode;
 	Event sfmlEvent;
-
-	//Mouse positions
-	Vector2i mousePosWindow;
-	Vector2f mousePosView;
+	Texture bird;
+	Texture cloud1;
+	Texture cloud2;
+	Texture cloud3;
+	Texture gameOverTexture;
+	Texture gameOverRestart;
 
 	//Resources
 	Font font;
@@ -42,18 +44,19 @@ private:
 	//Game logic
 	bool endGame;
 	unsigned points;
-	int health;
 
 	//Terrains
 	float terrainSpawnTimer;
 	float terrainSpawnTimerMax;
 	int maxTerrains;
-	bool mouseHeld;
 
 	//Game objects
 	Player player;
 	std::vector<Terrain> terrains;
+	Sprite gameOverSprite;
+	Sprite gameOverRestartSprite;
 	Background* background;
+
 
 	//Private functions
 	void initVariables();
@@ -75,8 +78,8 @@ public:
 	void pollEvents();
 
 	//Updaters
-	void updateMousePosition();
 	void updateText();
+	void updatePlayer();
 	void updateTerrains();
 	void updateColision();
 	void update();

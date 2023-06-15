@@ -1,49 +1,31 @@
 #include "Terrain.h"
+#include <iostream>
 
 using namespace sf;
 
 void Terrain::initVariables()
 {
-	this->movementSpeed = 5.f;
+	this->movementSpeed = 10.f;
 }
 
-void Terrain::initShape(const RenderWindow& window)
+void Terrain::initSprite(const Texture& texture)
 {
-	this->shape.setSize(Vector2f(32.f, 32.f));
-	this->shape.setPosition(
-		static_cast<float>(rand()%window.getSize().x - this->shape.getGlobalBounds().width),
-		0.f
-	);
-
-	int type = rand() % 5;
-	switch (type)
-	{
-	case 0:
-		this->shape.setScale(Vector2f(7.f, 1.f));
-		break;
-	case 1:
-		this->shape.setScale(Vector2f(3.f, 1.f));
-		break;
-	case 2:
-		this->shape.setScale(Vector2f(5.f, 1.f));
-		break;
-	case 3:
-		this->shape.setScale(Vector2f(6.f, 2.f));
-		break;
-	case 4:
-		this->shape.setScale(Vector2f(4.f, 1.f));
-		break;
-	default:
-		break;
-	}
-
-	this->shape.setFillColor(Color::Green);
+	this->sprite.setTexture(texture);
 }
 
-Terrain::Terrain(const RenderWindow& window)
+void Terrain::initPosition(const RenderWindow& window)
+{
+	this->sprite.setPosition(
+		static_cast<float>(rand() % static_cast<int>(window.getSize().x - this->sprite.getGlobalBounds().width)),
+		-63.f
+	);
+}
+
+Terrain::Terrain(const RenderWindow& window, const Texture& texture)
 {
 	this->initVariables();
-	this->initShape(window);
+	this->initSprite(texture);
+	this->initPosition(window);
 }
 
 Terrain::~Terrain()
@@ -51,14 +33,14 @@ Terrain::~Terrain()
 }
 
 
-const RectangleShape& Terrain::getShape() const
+const Sprite& Terrain::getSprite() const
 {
-	return this->shape;
+	return this->sprite;
 }
 
 void Terrain::fall()
 {
-	this->shape.move(0.f, this->movementSpeed);
+	this->sprite.move(0.f, this->movementSpeed);
 }
 
 void Terrain::update()
@@ -67,5 +49,5 @@ void Terrain::update()
 
 void Terrain::render(RenderTarget& target)
 {
-	target.draw(this->shape);
+	target.draw(this->sprite);
 }

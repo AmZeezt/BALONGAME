@@ -11,18 +11,20 @@ using namespace sf;
 class Terrain
 {
 private:
-	RectangleShape shape;
+	Sprite sprite;
+	Texture texture;
 
 	float movementSpeed;
 
 	void initVariables();
-	void initShape(const RenderWindow& window);
+	void initSprite(const Texture& texture);
+	void initPosition(const RenderWindow& window);
 public:
-	Terrain(const RenderWindow& window);
+	Terrain(const RenderWindow& window, const Texture& texture);
 	virtual ~Terrain();
 
 	//Functions
-	const RectangleShape& getShape() const;
+	const Sprite& getSprite() const;
 	void fall();
 	void update();
 	void render(RenderTarget& target);
