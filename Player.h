@@ -21,7 +21,7 @@ private:
 	void initSprite();
 	void initTexture();
 public:
-	Player(float x = 320.f, float y = 320.f);
+	Player(float x = 280.f, float y = 320.f);
 	virtual ~Player();
 
 	//Functions

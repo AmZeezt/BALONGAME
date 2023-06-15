@@ -10,6 +10,7 @@ public:
     virtual ~Background() = default;
 
     void update();
+    void render();
 
 private:
     RenderWindow& window;
