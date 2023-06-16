@@ -22,7 +22,7 @@ private:
 	void initSprite();
 	void initTexture();
 public:
-	Player(int maxHealth = 3, float x = 320.f, float y = 320.f);
+	Player(int maxHealth = 5, float x = 287.f, float y = 320.f);
 	virtual ~Player();
 
 	//Functions

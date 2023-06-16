@@ -18,11 +18,11 @@ private:
 	int type;
 	int side;
 
-	void initVariables(float diffLevel, int type);
+	void initVariables(int speed, int type);
 	void initSprite(const Texture& texture);
 	void initPosition(const RenderWindow& window);
 public:
-	Terrain(const RenderWindow& window, const Texture& texture, float diffLevel, int type);
+	Terrain(const RenderWindow& window, const Texture& texture, int speed, int type);
 	virtual ~Terrain();
 
 	//Functions

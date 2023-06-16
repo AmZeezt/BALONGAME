@@ -18,14 +18,10 @@
 #include "Health.h"
 
 using namespace sf;
-/*
-	Game Engine
-*/
 
 class Game
 {
 private:
-	//Private Variables
 	//Window
 	RenderWindow* window;
 	VideoMode videoMode;
@@ -35,29 +31,25 @@ private:
 	Texture cloud2;
 	Texture cloud3;
 
-	//Resources
-	Font font;
-
-	//Text
-	Text uiText;
-
-
 	//Game logic
 	bool endGame;
 
 	//Terrains
-	float terrainSpawnTimer;
-	float terrainSpawnTimerMax;
+	int terrainSpawnTimer;
+	int terrainSpawnTimerMax;
+
 	int maxTerrains;
 	int view;
-	bool diffLevel;
+	
+	int difficultLevel;
+	int gameSpeed;
 
 	//Game objects
 	Player* player;
 	std::vector<Terrain> terrains;
 	Background* background;
 	Score* score;
-	userInterface userInterface;
+	userInterface ui;
 	// make player inherits from health
 	Health* health;
 

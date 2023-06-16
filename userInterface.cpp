@@ -29,10 +29,10 @@ void userInterface::initSprites()
 	this->gameOverSprite.setTexture(this->gameOverTexture);
 	this->gameOverRestartSprite.setTexture(this->gameOverRestart);
 	this->amongUsSprite.setTexture(this->amongUsTexture);
-	this->gameOverSprite.setPosition(120.f, 160.f);
+	this->gameOverSprite.setPosition(125.f, 160.f);
 	this->gameOverSprite.setScale(3.f, 3.f);
 	this->amongUsSprite.setScale(3.f, 3.f);
-	this->gameOverRestartSprite.setPosition(120.f, 500.f);
+	this->gameOverRestartSprite.setPosition(125.f, 500.f);
 	//this->amongUsSprite.setPosition(120.f, 500.f);
 }
 

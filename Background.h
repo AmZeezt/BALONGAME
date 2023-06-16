@@ -6,15 +6,15 @@ using namespace sf;
 
 class Background {
 public:
-    Background(RenderWindow& window, unsigned movementSpeed, int mediumLevelOffset, int highLevelOffset);
+    Background(unsigned movementSpeed);
     virtual ~Background() = default;
 
-    void update();
-    void render();
+    void update(const unsigned level);
+    void render(RenderWindow* window);
     void restart();
+    void setMovementSpeed(const unsigned& movementSpeed);
 
 private:
-    RenderWindow& window;
     Texture dirt, grass, sky_1, sky_2, sky_3, sky_12, sky_23;
     Sprite sprite;
 
@@ -27,5 +27,5 @@ private:
 
     void loadTexture(Texture& texture, const std::string& fileName);
     void selectSprite(const unsigned& rows, const unsigned& row);
-    void draw();
+    void draw(RenderWindow& window);
 };

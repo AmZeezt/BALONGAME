@@ -29,11 +29,11 @@ unsigned Score::getScore() {
 }
 
 void Score::render() {
-	const unsigned numberOfDigits = score == 0 ? 1 : ceil((int)log10(score) + 1);
+	const unsigned numberOfDigits = score == 0 ? 1 : (ceil((int)log10(score) + 1) + 1);
 	const unsigned scoreWidth = numberOfDigits * DIGIT_WIDTH;
 	const unsigned startingPosition = (window.getSize().x / 2) + (scoreWidth / 2);
 
-	unsigned digit = score;
+	unsigned digit = score * 10;
 
 	for (unsigned i = 0; i < numberOfDigits; i++) {
 		setDigitTexture(digit % 10);
