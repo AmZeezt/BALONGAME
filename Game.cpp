@@ -24,21 +24,13 @@ void Game::initVariables()
 	this->terrainSpawnTimerMax = 25.f;
 	this->terrainSpawnTimer = this->terrainSpawnTimerMax;
 	this->maxTerrains = 20;
+	this->view = 0;
 
 	//Textures
-	this->gameOverTexture.loadFromFile("textures/x64/ui/game_over.png");
-	this->gameOverRestart.loadFromFile("textures/x64/ui/press_enter_to_play.png");
 	this->bird.loadFromFile("textures/x64/obstacles/bird.png");
 	this->cloud1.loadFromFile("textures/x64/obstacles/cloud-1.png");
 	this->cloud2.loadFromFile("textures/x64/obstacles/cloud-2.png");
 	this->cloud3.loadFromFile("textures/x64/obstacles/cloud-3.png");
-
-	//Sprites
-	this->gameOverSprite.setTexture(this->gameOverTexture);
-	this->gameOverRestartSprite.setTexture(this->gameOverRestart);
-	this->gameOverSprite.setPosition(120.f,160.f);
-	this->gameOverSprite.setScale(3.f, 3.f);
-	this->gameOverRestartSprite.setPosition(120.f, 500.f);
 }
 
 void Game::initBackground() {
@@ -165,16 +157,13 @@ void Game::pollEvents()
 		case Event::KeyPressed:
 			if (this->sfmlEvent.key.code == Keyboard::Escape)
 				this->window->close();
+			if (this->sfmlEvent.key.code == Keyboard::Enter) {
+				if (this->view == 0) {
+					this->view = 1;
+				}
+			}
 			break;
 		}
-	}
-}
-
-void Game::renderText(RenderTarget* target)
-{
-	if (this->endGame) {
-		target->draw(this->gameOverSprite);
-		target->draw(this->gameOverRestartSprite);
 	}
 }
 
@@ -183,16 +172,26 @@ void Game::update()
 {
 	this->pollEvents();
 
-	//End game check
-	if (!this->endGame) {
-		//Update mouse position
+	//Game flow
+	if (this->view == 0) {
+		userInterface.update(view);
+	}
+	else if (this->view == 1)
+	{
 		this->updatePlayer();
 		this->updateTerrains();
+		background->update();
 		this->updateColision();
+		userInterface.update(view);
+	}
+	else if (this->view == 2)
+	{
+		userInterface.update(view);
 	}
 
 	//Endgame condition
 	if (health->getHealth() <= 0)
+		this->view = 2;
 		this->endGame = true;
 
 }
@@ -220,13 +219,13 @@ void Game::render()
 	window->clear();
 
 	//Draw game object
-	background->update();
+	background->render();
 
 	player->render(window);
 
 	renderTerrains(window);
 
-	renderText(window);
+	userInterface.render(window);
 
 	score->render();
 	health->render();

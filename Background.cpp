@@ -32,8 +32,6 @@ void Background::update() {
         singleOffset -= TILE_SIZE;
         totalOffset++;
     }
-
-    draw();
 }
 
 void Background::draw() {
@@ -82,4 +80,9 @@ void Background::selectSprite(const unsigned& rows, const unsigned& row) {
     else {
         sprite.setTexture(sky_1);
     }
+}
+
+void Background::render()
+{
+    draw();
 }
