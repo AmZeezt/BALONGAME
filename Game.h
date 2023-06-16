@@ -50,7 +50,7 @@ private:
 	float terrainSpawnTimerMax;
 	int maxTerrains;
 	int view;
-	float diffLevel;
+	bool diffLevel;
 
 	//Game objects
 	Player* player;

@@ -3,9 +3,10 @@
 
 using namespace sf;
 
-void Terrain::initVariables(float diffLevel)
+void Terrain::initVariables(float diffLevel, int type)
 {
 	this->movementSpeed = 10.f * diffLevel;
+	this->type = type;
 }
 
 void Terrain::initSprite(const Texture& texture)
@@ -15,15 +16,24 @@ void Terrain::initSprite(const Texture& texture)
 
 void Terrain::initPosition(const RenderWindow& window)
 {
+	int randomHelper = rand() % static_cast<int>(window.getSize().x - this->sprite.getGlobalBounds().width);
+	if (randomHelper < 320) {
+		side = 1;
+	}
+	else
+	{
+		side = -1;
+	}
 	this->sprite.setPosition(
-		static_cast<float>(rand() % static_cast<int>(window.getSize().x - this->sprite.getGlobalBounds().width)),
+		static_cast<float>(randomHelper),
 		-63.f
 	);
+	if (this->side == 1 && type == 0) sprite.scale(-1, 1);
 }
 
-Terrain::Terrain(const RenderWindow& window, const Texture& texture, float diffLevel)
+Terrain::Terrain(const RenderWindow& window, const Texture& texture, float diffLevel, int type)
 {
-	this->initVariables(diffLevel);
+	this->initVariables(diffLevel, type);
 	this->initSprite(texture);
 	this->initPosition(window);
 }
@@ -38,9 +48,21 @@ const Sprite& Terrain::getSprite() const
 	return this->sprite;
 }
 
+int Terrain::getType()
+{
+	return this->type;
+}
+
 void Terrain::fall()
 {
-	this->sprite.move(0.f, this->movementSpeed);
+	if (this->type == 0) {
+		this->sprite.move((this->movementSpeed * side) / 2, this->movementSpeed);
+	}
+	else
+	{
+		this->sprite.move(0.f, this->movementSpeed);
+	}
+	
 }
 
 void Terrain::update()

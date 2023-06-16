@@ -98,13 +98,21 @@ void Game::updateTerrains()
 			int type = rand() % 100;
 
 			if (type <= 8) {
-				this->terrains.push_back(Terrain(*this->window, this->bird, this->diffLevel));
+				this->terrains.push_back(Terrain(*this->window, this->bird, this->diffLevel, 0));
 			} else if (type <= 16) {
-				this->terrains.push_back(Terrain(*this->window, this->cloud1, this->diffLevel));
-			} else if (type <= 45) {
-				this->terrains.push_back(Terrain(*this->window, this->cloud2, this->diffLevel));
-			} else {
-				this->terrains.push_back(Terrain(*this->window, this->cloud3, this->diffLevel));
+				this->terrains.push_back(Terrain(*this->window, this->cloud1, this->diffLevel, 1));
+			}
+			else if (type <= 45) {
+				this->terrains.push_back(Terrain(*this->window, this->cloud2, this->diffLevel, 1));
+			}
+			else if (type <= 50) {
+				this->terrains.push_back(Terrain(*this->window, this->cloud2, this->diffLevel, 0));
+			}
+			else if (type <= 65) {
+				this->terrains.push_back(Terrain(*this->window, this->cloud3, this->diffLevel, 0));
+			}
+			else {
+				this->terrains.push_back(Terrain(*this->window, this->cloud3, this->diffLevel, 1));
 			}
 			score->update(1);
 			this->terrainSpawnTimer = 0.f;
@@ -203,6 +211,8 @@ void Game::pollEvents()
 					this->reInitGame();
 				}
 			}
+			if (this->sfmlEvent.key.code == Keyboard::K)
+				this->userInterface.engageAMUSS();
 			break;
 		}
 	}

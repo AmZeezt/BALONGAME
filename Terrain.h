@@ -15,16 +15,19 @@ private:
 	Texture texture;
 
 	float movementSpeed;
+	int type;
+	int side;
 
-	void initVariables(float diffLevel);
+	void initVariables(float diffLevel, int type);
 	void initSprite(const Texture& texture);
 	void initPosition(const RenderWindow& window);
 public:
-	Terrain(const RenderWindow& window, const Texture& texture, float diffLevel);
+	Terrain(const RenderWindow& window, const Texture& texture, float diffLevel, int type);
 	virtual ~Terrain();
 
 	//Functions
 	const Sprite& getSprite() const;
+	int getType();
 	void fall();
 	void update();
 	void render(RenderTarget& target);

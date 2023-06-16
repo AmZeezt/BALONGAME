@@ -1,2 +1,6 @@
 ﻿  Game.cpp
+D:\BALON\BALONGAME\Game.cpp(153,21): warning C4305: '=': truncation from 'float' to 'bool'
+D:\BALON\BALONGAME\Game.cpp(157,21): warning C4305: '=': truncation from 'float' to 'bool'
+D:\BALON\BALONGAME\Game.cpp(161,21): warning C4305: '=': truncation from 'float' to 'bool'
+D:\BALON\BALONGAME\Game.cpp(165,21): warning C4305: '=': truncation from 'float' to 'bool'
   BALONGAME.vcxproj -> D:\BALON\BALONGAME\x64\Debug\BALONGAME.exe
