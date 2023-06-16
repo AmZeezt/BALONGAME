@@ -1,22 +1,23 @@
 #include "Terrain.h"
 #include <iostream>
+#include <math.h>
 
 using namespace sf;
 
-void Terrain::initVariables(float diffLevel, int type)
+void Terrain::initVariables(int speed, int type)
 {
-	this->movementSpeed = 10.f * diffLevel;
-	this->type = type;
+	movementSpeed = ceil(speed * 1.3f) - 1;
+	type = type;
 }
 
 void Terrain::initSprite(const Texture& texture)
 {
-	this->sprite.setTexture(texture);
+	sprite.setTexture(texture);
 }
 
 void Terrain::initPosition(const RenderWindow& window)
 {
-	int randomHelper = rand() % static_cast<int>(window.getSize().x - this->sprite.getGlobalBounds().width);
+	int randomHelper = rand() % static_cast<int>(window.getSize().x - sprite.getGlobalBounds().width);
 	if (randomHelper < 320) {
 		side = 1;
 	}
@@ -24,18 +25,18 @@ void Terrain::initPosition(const RenderWindow& window)
 	{
 		side = -1;
 	}
-	this->sprite.setPosition(
+	sprite.setPosition(
 		static_cast<float>(randomHelper),
 		-63.f
 	);
-	if (this->side == 1 && type == 0) sprite.scale(-1, 1);
+	if (side == 1 && type == 0) sprite.scale(-1, 1);
 }
 
-Terrain::Terrain(const RenderWindow& window, const Texture& texture, float diffLevel, int type)
+Terrain::Terrain(const RenderWindow& window, const Texture& texture, int speed, int type)
 {
-	this->initVariables(diffLevel, type);
-	this->initSprite(texture);
-	this->initPosition(window);
+	initVariables(speed, type);
+	initSprite(texture);
+	initPosition(window);
 }
 
 Terrain::~Terrain()
@@ -45,22 +46,22 @@ Terrain::~Terrain()
 
 const Sprite& Terrain::getSprite() const
 {
-	return this->sprite;
+	return sprite;
 }
 
 int Terrain::getType()
 {
-	return this->type;
+	return type;
 }
 
 void Terrain::fall()
 {
-	if (this->type == 0) {
-		this->sprite.move((this->movementSpeed * side) / 2, this->movementSpeed);
+	if (type == 0) {
+		sprite.move((movementSpeed * side) / 2, movementSpeed);
 	}
 	else
 	{
-		this->sprite.move(0.f, this->movementSpeed);
+		sprite.move(0.f, movementSpeed);
 	}
 	
 }
@@ -71,5 +72,5 @@ void Terrain::update()
 
 void Terrain::render(RenderTarget& target)
 {
-	target.draw(this->sprite);
+	target.draw(sprite);
 }

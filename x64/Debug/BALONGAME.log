@@ -1,6 +1,7 @@
 ﻿  Game.cpp
-D:\BALON\BALONGAME\Game.cpp(153,21): warning C4305: '=': truncation from 'float' to 'bool'
-D:\BALON\BALONGAME\Game.cpp(157,21): warning C4305: '=': truncation from 'float' to 'bool'
-D:\BALON\BALONGAME\Game.cpp(161,21): warning C4305: '=': truncation from 'float' to 'bool'
-D:\BALON\BALONGAME\Game.cpp(165,21): warning C4305: '=': truncation from 'float' to 'bool'
-  BALONGAME.vcxproj -> D:\BALON\BALONGAME\x64\Debug\BALONGAME.exe
+C:\Users\mmik3\source\repos\BALONGAME\Game.cpp(127,24): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\mmik3\source\repos\BALONGAME\Game.cpp(130,25): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+  Player.cpp
+  main.cpp
+  Generating Code...
+  BALONGAME.vcxproj -> C:\Users\mmik3\source\repos\BALONGAME\x64\Debug\BALONGAME.exe

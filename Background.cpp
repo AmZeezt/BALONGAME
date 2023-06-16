@@ -5,8 +5,8 @@ using namespace std;
 
 #define TILE_SIZE 64
 
-Background::Background(sf::RenderWindow& window, unsigned movementSpeed, int mediumLevelOffset, int highLevelOffset)
-    : window(window), movementSpeed(movementSpeed), singleOffset(0), totalOffset(0), mediumLevelOffset(mediumLevelOffset), highLevelOffset(highLevelOffset) {
+Background::Background(unsigned movementSpeed)
+    :movementSpeed(movementSpeed), singleOffset(1), totalOffset(0), mediumLevelOffset(numeric_limits<int>::max()), highLevelOffset(numeric_limits<int>::max()) {
 
     loadTexture(dirt, "textures/x64/background/dirt.png");
     loadTexture(grass, "textures/x64/background/grass.png");
@@ -25,16 +25,23 @@ void Background::loadTexture(sf::Texture& texture, const string& fileName) {
     }
 }
 
-void Background::update() {
+void Background::update(const unsigned level) {
     singleOffset += movementSpeed;
 
     if (singleOffset > TILE_SIZE) {
         singleOffset -= TILE_SIZE;
         totalOffset++;
     }
+
+    if (level == 2 && mediumLevelOffset == numeric_limits<int>::max()) {
+        mediumLevelOffset = totalOffset;
+    }
+    else if (level == 3 && highLevelOffset == numeric_limits<int>::max()) {
+        highLevelOffset = totalOffset;
+    }
 }
 
-void Background::draw() {
+void Background::draw(sf::RenderWindow& window) {
     const unsigned windowWidth = window.getSize().x;
     const unsigned windowHeight = window.getSize().y;
 
@@ -82,13 +89,20 @@ void Background::selectSprite(const unsigned& rows, const unsigned& row) {
     }
 }
 
-void Background::render()
+void Background::render(sf::RenderWindow* window)
 {
-    draw();
+    draw(*window);
 }
 
 void Background::restart()
 {
-    this->totalOffset = 0;
-    this->singleOffset = 0;
+    totalOffset = 0;
+    singleOffset = 0;
+    mediumLevelOffset = numeric_limits<int>::max();
+    highLevelOffset = numeric_limits<int>::max();
+}
+
+void Background::setMovementSpeed(const unsigned& _movementSpeed)
+{
+	movementSpeed = _movementSpeed;
 }
