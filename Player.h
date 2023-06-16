@@ -16,6 +16,7 @@ private:
 	float movementSpeed;
 	int hp;
 	int hpMax;
+	float posStartX, posStartY;
 
 	void initVariables();
 	void initSprite();
@@ -28,8 +29,8 @@ public:
 	const Sprite& getSprite() const;
 
 	void setMaxHp(int maxHp);
-
 	int getPlayerHp();
+	void reset();
 	void lowerPlayerHp();
 	void move();
 	void updateWindowBoundsCollision(const RenderTarget* target);

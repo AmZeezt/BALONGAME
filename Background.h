@@ -11,6 +11,7 @@ public:
 
     void update();
     void render();
+    void restart();
 
 private:
     RenderWindow& window;

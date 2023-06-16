@@ -3,9 +3,9 @@
 
 using namespace sf;
 
-void Terrain::initVariables()
+void Terrain::initVariables(float diffLevel)
 {
-	this->movementSpeed = 10.f;
+	this->movementSpeed = 10.f * diffLevel;
 }
 
 void Terrain::initSprite(const Texture& texture)
@@ -21,9 +21,9 @@ void Terrain::initPosition(const RenderWindow& window)
 	);
 }
 
-Terrain::Terrain(const RenderWindow& window, const Texture& texture)
+Terrain::Terrain(const RenderWindow& window, const Texture& texture, float diffLevel)
 {
-	this->initVariables();
+	this->initVariables(diffLevel);
 	this->initSprite(texture);
 	this->initPosition(window);
 }

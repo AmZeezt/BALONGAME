@@ -16,11 +16,11 @@ private:
 
 	float movementSpeed;
 
-	void initVariables();
+	void initVariables(float diffLevel);
 	void initSprite(const Texture& texture);
 	void initPosition(const RenderWindow& window);
 public:
-	Terrain(const RenderWindow& window, const Texture& texture);
+	Terrain(const RenderWindow& window, const Texture& texture, float diffLevel);
 	virtual ~Terrain();
 
 	//Functions

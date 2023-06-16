@@ -86,3 +86,9 @@ void Background::render()
 {
     draw();
 }
+
+void Background::restart()
+{
+    this->totalOffset = 0;
+    this->singleOffset = 0;
+}

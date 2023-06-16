@@ -25,6 +25,7 @@ void Game::initVariables()
 	this->terrainSpawnTimer = this->terrainSpawnTimerMax;
 	this->maxTerrains = 20;
 	this->view = 0;
+	this->diffLevel = 1.f;
 
 	//Textures
 	this->bird.loadFromFile("textures/x64/obstacles/bird.png");
@@ -97,13 +98,13 @@ void Game::updateTerrains()
 			int type = rand() % 100;
 
 			if (type <= 8) {
-				this->terrains.push_back(Terrain(*this->window, this->bird));
+				this->terrains.push_back(Terrain(*this->window, this->bird, this->diffLevel));
 			} else if (type <= 16) {
-				this->terrains.push_back(Terrain(*this->window, this->cloud1));
+				this->terrains.push_back(Terrain(*this->window, this->cloud1, this->diffLevel));
 			} else if (type <= 45) {
-				this->terrains.push_back(Terrain(*this->window, this->cloud2));
+				this->terrains.push_back(Terrain(*this->window, this->cloud2, this->diffLevel));
 			} else {
-				this->terrains.push_back(Terrain(*this->window, this->cloud3));
+				this->terrains.push_back(Terrain(*this->window, this->cloud3, this->diffLevel));
 			}
 			score->update(1);
 			this->terrainSpawnTimer = 0.f;
@@ -136,6 +137,42 @@ void Game::updateColision()
 	
 }
 
+void Game::updateDifLevel()
+{
+	switch (this->score->getScore())
+	{
+	case 64:
+		this->diffLevel = 1.2f;
+		this->terrainSpawnTimerMax = 22.f;
+		break;
+	case 128:
+		this->diffLevel = 1.5f;
+		this->terrainSpawnTimerMax = 20.f;
+		break;
+	case 256:
+		this->diffLevel = 1.8f;
+		this->terrainSpawnTimerMax = 18.f;
+		break;
+	case 512:
+		this->diffLevel = 2.f;
+		this->terrainSpawnTimerMax = 15.f;
+		break;
+	default:
+		break;
+	}
+}
+
+void Game::reInitGame()
+{
+	this->score->reset();
+	this->health->reset();
+	this->player->reset();
+	this->diffLevel = 1.f;
+	this->terrainSpawnTimer = 25.f;
+	this->terrains.clear();
+	this->background->restart();
+}
+
 void Game::updatePlayer()
 {
 	player->update(window);
@@ -161,6 +198,10 @@ void Game::pollEvents()
 				if (this->view == 0) {
 					this->view = 1;
 				}
+				if (this->view == 2) {
+					this->view = 1;
+					this->reInitGame();
+				}
 			}
 			break;
 		}
@@ -178,6 +219,7 @@ void Game::update()
 	}
 	else if (this->view == 1)
 	{
+		this->updateDifLevel();
 		this->updatePlayer();
 		this->updateTerrains();
 		background->update();

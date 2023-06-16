@@ -50,6 +50,7 @@ private:
 	float terrainSpawnTimerMax;
 	int maxTerrains;
 	int view;
+	float diffLevel;
 
 	//Game objects
 	Player* player;
@@ -80,6 +81,8 @@ public:
 	void pollEvents();
 
 	//Updaters
+	void updateDifLevel();
+	void reInitGame();
 	void updatePlayer();
 	void updateTerrains();
 	void updateColision();

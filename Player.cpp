@@ -15,6 +15,7 @@ void Player::initSprite()
 
 	//Set scale
 	this->sprite.scale(1.f, 1.f);
+	this->sprite.setPosition(posStartX, posStartY);
 }
 
 void Player::initTexture()
@@ -28,7 +29,8 @@ void Player::initTexture()
 Player::Player(int maxHealth, float x, float y) : hpMax(maxHealth), hp(maxHealth)
 {
 	//Set player starting position
-	this->sprite.setPosition(x, y);
+	this->posStartX = x;
+	this->posStartY = y;
 	this->initVariables();
 	this->initTexture();
 	this->initSprite();
@@ -52,6 +54,11 @@ const Sprite& Player::getSprite() const
 int Player::getPlayerHp()
 {
 	return this->hp;
+}
+
+void Player::reset()
+{
+	this->sprite.setPosition(posStartX, posStartY);
 }
 
 void Player::lowerPlayerHp()
